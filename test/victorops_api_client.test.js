@@ -1,7 +1,13 @@
-const { expect } = require('chai');
+const chai = require('chai');
+const chaiAsPromised = require('chai-as-promised');
 const rewire = require('rewire');
 const nock = require('nock');
 const VictorOpsApiClient = require('../lib');
+
+// Use 'chai-as-promised'.
+chai.use(chaiAsPromised);
+// Get 'expect'.
+const expect = chai.expect;
 
 const clientRewire = rewire('../lib/victorops_api_client');
 const baseUrl = clientRewire.__get__('BASE_URL');
@@ -42,6 +48,11 @@ describe('VictorOps API Client Tests', () => {
       expect(client._getRequestHeaders).to.be.an.instanceof(Function);
     });
 
+    it(`should have a private '_getAxiosInstance' method`, () => {
+      expect(client._getAxiosInstance).to.be.an('function');
+      expect(client._getAxiosInstance).to.be.an.instanceof(Function);
+    });
+
     it(`should have a private '_getRequestOptions' method`, () => {
       expect(client._getRequestOptions).to.be.an('function');
       expect(client._getRequestOptions).to.be.an.instanceof(Function);
@@ -78,16 +89,16 @@ describe('VictorOps API Client Tests', () => {
       }
     });
 
-    it(`should have a public 'apiId' property`, () => {
-      expect(client).to.have.property('apiId');
-      expect(client.apiId).to.be.a('string');
-      expect(client.apiId).to.eql(clientOptions.apiId);
+    it(`should have a private '_apiId' property`, () => {
+      expect(client).to.have.property('_apiId');
+      expect(client._apiId).to.be.a('string');
+      expect(client._apiId).to.eql(clientOptions.apiId);
     });
 
-    it(`should have a public 'apiKey' property`, () => {
-      expect(client).to.have.property('apiKey');
-      expect(client.apiKey).to.be.a('string');
-      expect(client.apiKey).to.eql(clientOptions.apiKey);
+    it(`should have a private '_apiKey' property`, () => {
+      expect(client).to.have.property('_apiKey');
+      expect(client._apiKey).to.be.a('string');
+      expect(client._apiKey).to.eql(clientOptions.apiKey);
     });
   });
 
@@ -100,10 +111,10 @@ describe('VictorOps API Client Tests', () => {
 
       client._checkOptions(options);
 
-      expect(client.apiId).to.be.a('string');
-      expect(client.apiId).to.eql(options.apiId);
-      expect(client.apiKey).to.be.a('string');
-      expect(client.apiKey).to.eql(options.apiKey);
+      expect(client._apiId).to.be.a('string');
+      expect(client._apiId).to.eql(options.apiId);
+      expect(client._apiKey).to.be.a('string');
+      expect(client._apiKey).to.eql(options.apiKey);
     });
 
     it(`should throw an error when missing an 'apiId'`, () => {
@@ -182,8 +193,8 @@ describe('VictorOps API Client Tests', () => {
     });
 
     it(`should throw an error when missing an 'apiId'`, () => {
-      client.apiId = null;
-      client.apiKey = clientOptions.apiKey;
+      client._apiId = null;
+      client._apiKey = clientOptions.apiKey;
 
       try {
         client._getRequestHeaders();
@@ -195,8 +206,8 @@ describe('VictorOps API Client Tests', () => {
     });
 
     it(`should throw an error when missing an 'apiKey'`, () => {
-      client.apiId = clientOptions.apiId;
-      client.apiKey = null;
+      client._apiId = clientOptions.apiId;
+      client._apiKey = null;
 
       try {
         client._getRequestHeaders();
@@ -214,15 +225,10 @@ describe('VictorOps API Client Tests', () => {
       const options = client._getRequestOptions('GET', '/api-public/v1/user');
 
       expect(options).to.be.an('object');
-      expect(options).to.have.property('baseUrl', baseUrl);
-      expect(options).to.have.property('uri', '/api-public/v1/user');
+      expect(options).to.have.property('url', '/api-public/v1/user');
       expect(options).to.have.property('method', 'GET');
-      expect(options).to.have.property('headers');
-      expect(options.headers).to.be.an('object');
-      expect(options).to.have.property('timeout', 5000);
-      expect(options).to.have.property('json', true);
-      expect(options.qs).to.be.undefined;
-      expect(options.body).to.be.undefined;
+      expect(options.params).to.be.undefined;
+      expect(options.data).to.be.undefined;
     });
 
     it('should get the request options with query parameters and without a body', () => {
@@ -235,18 +241,13 @@ describe('VictorOps API Client Tests', () => {
         '/api-public/v2/user/testUser/oncall/schedule', query);
 
       expect(options).to.be.an('object');
-      expect(options).to.have.property('baseUrl', baseUrl);
-      expect(options).to.have.property('uri',
+      expect(options).to.have.property('url',
         '/api-public/v2/user/testUser/oncall/schedule');
       expect(options).to.have.property('method', 'GET');
-      expect(options).to.have.property('headers');
-      expect(options.headers).to.be.an('object');
-      expect(options).to.have.property('timeout', 5000);
-      expect(options).to.have.property('json', true);
-      expect(options).to.have.property('qs');
-      expect(options.qs).to.be.an('object');
-      expect(options.qs).to.eql(query);
-      expect(options.body).to.be.undefined;
+      expect(options).to.have.property('params');
+      expect(options.params).to.be.an('object');
+      expect(options.params).to.eql(query);
+      expect(options.data).to.be.undefined;
     });
 
     it('should get the request options with a body and without query parameters', () => {
@@ -263,17 +264,12 @@ describe('VictorOps API Client Tests', () => {
         '/api-public/v1/user', null, body);
   
       expect(options).to.be.an('object');
-      expect(options).to.have.property('baseUrl', baseUrl);
-      expect(options).to.have.property('uri', '/api-public/v1/user');
+      expect(options).to.have.property('url', '/api-public/v1/user');
       expect(options).to.have.property('method', 'POST');
-      expect(options).to.have.property('headers');
-      expect(options.headers).to.be.an('object');
-      expect(options).to.have.property('timeout', 5000);
-      expect(options).to.have.property('json', true);
-      expect(options).to.have.property('body');
-      expect(options.body).to.be.an('object');
-      expect(options.body).to.eql(body);
-      expect(options.qs).to.be.undefined;
+      expect(options).to.have.property('data');
+      expect(options.data).to.be.an('object');
+      expect(options.data).to.eql(body);
+      expect(options.params).to.be.undefined;
     });
   });
 
@@ -295,14 +291,19 @@ describe('VictorOps API Client Tests', () => {
       ]
     };
 
-    before(() => {
+    const fullResponse = {
+      statusCode: 200,
+      statusMessage: 'OK',
+      headers: { 'content-type': 'application/json' },
+      data: response,
+    };
+
+    it('should return a VictorOps API response', async () => {
       // Mock the API request.
       nock(baseUrl)
         .get('/api-public/v1/user')
         .reply(200, response);
-    });
 
-    it('should return a VictorOps API response', async () => {
       // Get the options.
       const options = client._getRequestOptions('GET', '/api-public/v1/user');
 
@@ -311,95 +312,104 @@ describe('VictorOps API Client Tests', () => {
 
       expect(users).to.be.an('object');
       expect(users).to.eql(response);
+
+      nock.cleanAll();
     });
 
-    after(() => {
+    it('should return a full VictorOps API response', async () => {
+      // Mock the API request.
+      nock(baseUrl)
+        .get('/api-public/v1/user')
+        .reply(200, response);
+
+      // Set the full response option.
+      client.fullResponse = true;
+
+      // Get the options.
+      const options = client._getRequestOptions('GET', '/api-public/v1/user');
+
+      // Perform the request.
+      const resp = await client._performRequest(options);
+
+      expect(resp).to.be.an('object');
+      expect(resp).to.have.property('statusCode');
+      expect(resp).to.have.property('statusMessage');
+      expect(resp).to.have.property('headers');
+      expect(resp).to.have.property('data');
+      expect(resp).to.eql(fullResponse);
+
       nock.cleanAll();
+    });
+
+    it('should throw an error when missing the request options', async () => {
+      await expect(client._performRequest()).to.be.rejectedWith(Error);
+      await expect(client._performRequest('something')).to.be.rejectedWith(Error);
+      await expect(client._performRequest([])).to.be.rejectedWith(Error);
+      await expect(client._performRequest({})).to.be.rejectedWith(Error);
     });
   });
 
   context('#_handleError()', () => {
-    it(`should return a stripped 'StatusCodeError' error`, () => {
+    it(`should return a 'StatusCodeError' error`, () => {
       const statusCode = 403;
-      const response = {
-        body: 'Authentication failed or rate-limit reached'
+      const statusText = 'Authentication failed or rate-limit reached';
+
+      const err = new Error(`Request failed with status code ${statusCode}`);
+
+      // Mock Axios response object.
+      err.response = {
+        status: statusCode,
+        statusText,
+        headers: {},
+        data: 'Bad stuff',
       };
 
-      const err = new Error(`${statusCode} - "${response.body}"`);
-      err.name = 'StatusCodeError';
-      err.statusCode = statusCode;
-      err.response = response;
-      err.error = {};
-      err.options = {};
+      // Add the typical Axios error values.
+      err.code = null;
+      err.config = {};
+      err.request = {};
+      err.isAxiosError = true;
+      err.toJSON = () => {};
 
       // Create the error.
       const handledErr = client._handleError(err);
 
       expect(handledErr).to.be.an.instanceof(Error);
       expect(handledErr.name).to.eql('StatusCodeError');
+      expect(handledErr.message).to.eql(String(err));
       expect(handledErr.statusCode).to.eql(statusCode);
-      expect(handledErr.message).to.eql(`${statusCode} - "${response.body}"`);
-      expect(handledErr.response).to.eql(response);
-      expect(handledErr.error).to.be.undefined;
-      expect(handledErr.options).to.be.undefined;
+      expect(handledErr.statusMessage).to.eql(statusText);
+      expect(handledErr.headers).to.eql({});
+      expect(handledErr.body).to.eql('Bad stuff');
+      expect(handledErr).to.have.property('cause');
+      expect(handledErr.cause).to.be.an.instanceof(Error);
+      expect(handledErr.cause.message).to.eql(err.message);
     });
 
-    it(`should return a stripped 'RequestError' error`, () => {
-      const passedErr = new Error('RequestError test');
-
-      const err = new Error(String(passedErr));
-      err.name = 'RequestError';
-      err.cause = passedErr;
-      err.error = passedErr;
-      err.options = {};
+    it(`should return a 'RequestError' error`, () => {
+      const err = new Error('Oops, something happened');
+      err.config = {};
+      err.response = undefined;
 
       // Create the error.
       const handledErr = client._handleError(err);
 
       expect(handledErr).to.be.an.instanceof(Error);
       expect(handledErr.name).to.eql('RequestError');
-      expect(handledErr.message).to.eql(String(passedErr));
-      expect(handledErr.cause).to.eql(passedErr);
-      expect(handledErr.error).to.be.undefined;
-      expect(handledErr.options).to.be.undefined;
+      expect(handledErr.message).to.eql(String(err));
+      expect(handledErr).to.have.property('cause');
+      expect(handledErr.cause).to.be.an.instanceof(Error);
+      expect(handledErr.cause.message).to.eql(err.message);
     });
 
-    it(`should return a stripped 'TransformError' error`, () => {
-      const passedErr = new Error('TransformError test');
-
-      const err = new Error(String(passedErr));
-      err.name = 'TransformError';
-      err.cause = passedErr;
-      err.error = passedErr;
-      err.options = {};
-
-      // Create the error.
-      const handledErr = client._handleError(err);
-
-      expect(handledErr).to.be.an.instanceof(Error);
-      expect(handledErr.name).to.eql('TransformError');
-      expect(handledErr.message).to.eql(String(passedErr));
-      expect(handledErr.cause).to.eql(passedErr);
-      expect(handledErr.error).to.be.undefined;
-      expect(handledErr.options).to.be.undefined;
-    });
-
-    it(`should return a unstripped 'TransformError' error`, () => {
-      const passedErr = new Error('TransformError test');
-  
-      const err = new Error(String(passedErr));
-      err.name = 'TransformError';
-      err.cause = passedErr;
+    it(`should return an unmodified error`, () => {
+      const err = new Error('Oops, something happened');
   
       // Create the error.
       const handledErr = client._handleError(err);
   
       expect(handledErr).to.be.an.instanceof(Error);
-      expect(handledErr.name).to.eql('TransformError');
-      expect(handledErr.message).to.eql(String(passedErr));
-      expect(handledErr.cause).to.eql(passedErr);
-      expect(handledErr.error).to.be.undefined;
-      expect(handledErr.options).to.be.undefined;
+      expect(handledErr).to.eql(err);
     });
   });
 

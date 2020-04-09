@@ -15,3 +15,4 @@ require('./endpoints/scheduled_overrides.test.js');
 require('./endpoints/rotations.test.js');
 require('./endpoints/webhooks.test.js');
 require('./endpoints/maintenance_mode.test.js');
+require('./utils/errors.test.js');

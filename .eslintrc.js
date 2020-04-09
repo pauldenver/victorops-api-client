@@ -21,6 +21,11 @@ module.exports = {
       requireReturn: false,
       prefer: { returns: 'returns' },
     }],
+    'max-len': ['error', {
+      code: 85,
+      tabWidth: 2,
+      ignoreUrls: true,
+    }],
     'object-curly-spacing': [ 'error', 'always' ],
     'indent': [
       'error', 2, {
