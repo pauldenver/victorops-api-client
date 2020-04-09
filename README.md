@@ -1,4 +1,4 @@
-# VictorOps API Client   [![Build Status](https://travis-ci.com/pauldenver/victorops-api-client.svg?token=FbkPy4LQavokgWKBBihp&branch=master)](https://travis-ci.com/pauldenver/victorops-api-client)
+# VictorOps API Client  [![Build Status](https://travis-ci.com/pauldenver/victorops-api-client.svg?branch=master)](https://travis-ci.com/pauldenver/victorops-api-client) [![Coverage Status](https://coveralls.io/repos/github/pauldenver/victorops-api-client/badge.svg?branch=master)](https://coveralls.io/github/pauldenver/victorops-api-client?branch=master)
 
 The `victorops-api-client` library contains a simple and convenient HTTP client for making requests to
 the [VictorOps REST API](https://portal.victorops.com/public/api-docs.html).

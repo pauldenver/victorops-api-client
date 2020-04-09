@@ -17,7 +17,8 @@
     "lint": "eslint ./lib/**/*.js",
     "lint:fix": "eslint ./lib/**/*.js --fix",
     "test": "mocha ./test/tests.js",
-    "coverage": "nyc --reporter=html --reporter=text mocha ./test/tests.js"
+    "coverage": "nyc --reporter=html --reporter=text mocha ./test/tests.js",
+    "coveralls": "nyc report --reporter=text-lcov | coveralls"
   },
   "dependencies": {
     "axios": "^0.19.2",
@@ -29,6 +30,7 @@
   "devDependencies": {
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
+    "coveralls": "^3.0.11",
     "eslint": "^6.8.0",
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-import": "^2.20.1",
