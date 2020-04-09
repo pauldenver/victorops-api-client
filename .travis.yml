@@ -4,6 +4,8 @@ node_js:
   - "9"
   - "10"
   - "11"
+script:
+  - npm run test:coverage
 after_success:
-  - npm run coverage
-  - npm run coveralls
+  - npm run test:coveralls
+  - npm run test:codecov

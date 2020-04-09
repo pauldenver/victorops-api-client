@@ -1,4 +1,4 @@
-# VictorOps API Client  [![Build Status](https://travis-ci.com/pauldenver/victorops-api-client.svg?branch=master)](https://travis-ci.com/pauldenver/victorops-api-client) [![Coverage Status](https://coveralls.io/repos/github/pauldenver/victorops-api-client/badge.svg?branch=master)](https://coveralls.io/github/pauldenver/victorops-api-client?branch=master)
+# VictorOps API Client  [![Build Status](https://travis-ci.com/pauldenver/victorops-api-client.svg?branch=master)](https://travis-ci.com/pauldenver/victorops-api-client) [![Coverage Status](https://coveralls.io/repos/github/pauldenver/victorops-api-client/badge.svg?branch=master)](https://coveralls.io/github/pauldenver/victorops-api-client?branch=master)  [![codecov](https://codecov.io/gh/pauldenver/victorops-api-client/branch/master/graph/badge.svg)](https://codecov.io/gh/pauldenver/victorops-api-client)
 
 The `victorops-api-client` library contains a simple and convenient HTTP client for making requests to
 the [VictorOps REST API](https://portal.victorops.com/public/api-docs.html).
@@ -30,6 +30,7 @@ the [VictorOps REST API](https://portal.victorops.com/public/api-docs.html).
   - [Rotations](#rotations)
   - [Webhooks](#webhooks)
   - [Maintenance Mode](#maintenance-mode)
+- [Change Log](#change-log)
 - [License](#license)
 
 ## Installation
@@ -321,6 +322,12 @@ Any endpoint operation that takes a `query` argument expects the value to be an 
 - **`client.maintenanceMode.getModeState()`** - Get an organization's current maintenance mode state - [VictorOps Documentation](https://portal.victorops.com/public/api-docs.html#!/Maintenance32Mode/get_api_public_v1_maintenancemode)  
 - **`client.maintenanceMode.startMode(modeDef)`** - Start maintenance mode for routing keys - [VictorOps Documentation](https://portal.victorops.com/public/api-docs.html#!/Maintenance32Mode/post_api_public_v1_maintenancemode_start)  
 - **`client.maintenanceMode.endMode(modeId)`** - End maintenance mode for routing keys - [VictorOps Documentation](https://portal.victorops.com/public/api-docs.html#!/Maintenance32Mode/put_api_public_v1_maintenancemode_maintenancemodeid_end)  
+
+## Change Log
+
+### v1.0.0
+
+- Initial release
 
 ## License
 
