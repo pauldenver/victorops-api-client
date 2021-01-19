@@ -15,6 +15,7 @@ const baseUrl = clientRewire.__get__('BASE_URL');
 
 describe('Incidents Endpoint Tests', () => {
   let client;
+  let reqHeaders;
 
   // Set the client options.
   const clientOptions = {
@@ -24,6 +25,9 @@ describe('Incidents Endpoint Tests', () => {
 
   beforeEach(() => {
     client = new VictorOpsApiClient(clientOptions);
+
+    // Get the headers from the instance.
+    reqHeaders = { reqheaders: client._headers };
   });
 
   context('#getIncidents()', () => {
@@ -67,7 +71,7 @@ describe('Incidents Endpoint Tests', () => {
 
     it(`should return the current incidents`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-public/v1/incidents')
         .reply(200, response);
 
@@ -85,7 +89,7 @@ describe('Incidents Endpoint Tests', () => {
 
     it(`should throw an error when getting the current incidents`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-public/v1/incidents')
         .replyWithError('Something bad happened!');
 
@@ -107,7 +111,7 @@ describe('Incidents Endpoint Tests', () => {
 
     it(`should create a new incident`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .post('/api-public/v1/incidents')
         .reply(200, response);
 
@@ -134,7 +138,7 @@ describe('Incidents Endpoint Tests', () => {
 
     it(`should throw an error when creating a new incident`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .post('/api-public/v1/incidents')
         .replyWithError('Something bad happened!');
 
@@ -159,7 +163,7 @@ describe('Incidents Endpoint Tests', () => {
 
     it(`should acknowledge a list of incidents`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .patch('/api-public/v1/incidents/ack')
         .reply(200, response);
 
@@ -180,7 +184,7 @@ describe('Incidents Endpoint Tests', () => {
 
     it(`should throw an error when acknowledging incidents`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .patch('/api-public/v1/incidents/ack')
         .replyWithError('Something bad happened!');
 
@@ -209,7 +213,7 @@ describe('Incidents Endpoint Tests', () => {
 
     it(`should reroute a list of incidents`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .post('/api-public/v1/incidents/reroute')
         .reply(200, response);
 
@@ -239,7 +243,7 @@ describe('Incidents Endpoint Tests', () => {
 
     it(`should throw an error when rerouting incidents`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .post('/api-public/v1/incidents/reroute')
         .replyWithError('Something bad happened!');
 
@@ -264,7 +268,7 @@ describe('Incidents Endpoint Tests', () => {
 
     it(`should resolve a list of incidents`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .patch('/api-public/v1/incidents/resolve')
         .reply(200, response);
 
@@ -285,7 +289,7 @@ describe('Incidents Endpoint Tests', () => {
 
     it(`should throw an error when resolving incidents`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .patch('/api-public/v1/incidents/resolve')
         .replyWithError('Something bad happened!');
 
@@ -312,7 +316,7 @@ describe('Incidents Endpoint Tests', () => {
 
     it(`should acknowledge a list of incidents for a user`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .patch('/api-public/v1/incidents/byUser/ack')
         .reply(200, response);
 
@@ -330,7 +334,7 @@ describe('Incidents Endpoint Tests', () => {
 
     it(`should throw an error when acknowledging incidents for a user`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .patch('/api-public/v1/incidents/byUser/ack')
         .replyWithError('Something bad happened!');
 
@@ -357,7 +361,7 @@ describe('Incidents Endpoint Tests', () => {
 
     it(`should resolve a list of incidents for a user`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .patch('/api-public/v1/incidents/byUser/resolve')
         .reply(200, response);
 
@@ -375,7 +379,7 @@ describe('Incidents Endpoint Tests', () => {
 
     it(`should throw an error when resolving incidents for a user`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .patch('/api-public/v1/incidents/byUser/resolve')
         .replyWithError('Something bad happened!');
 

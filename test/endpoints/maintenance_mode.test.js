@@ -15,6 +15,7 @@ const baseUrl = clientRewire.__get__('BASE_URL');
 
 describe('Maintenance Mode Endpoint Tests', () => {
   let client;
+  let reqHeaders;
 
   // Set the client options.
   const clientOptions = {
@@ -24,6 +25,9 @@ describe('Maintenance Mode Endpoint Tests', () => {
 
   beforeEach(() => {
     client = new VictorOpsApiClient(clientOptions);
+
+    // Get the headers from the instance.
+    reqHeaders = { reqheaders: client._headers };
   });
 
   context('#getModeState()', () => {
@@ -48,7 +52,7 @@ describe('Maintenance Mode Endpoint Tests', () => {
 
     it(`should return the maintenance mode state`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-public/v1/maintenancemode')
         .reply(200, response);
 
@@ -63,7 +67,7 @@ describe('Maintenance Mode Endpoint Tests', () => {
 
     it(`should throw an error when getting the maintenance mode state`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-public/v1/maintenancemode')
         .replyWithError('Something bad happened!');
 
@@ -98,7 +102,7 @@ describe('Maintenance Mode Endpoint Tests', () => {
 
     it(`should start the maintenance mode`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .post('/api-public/v1/maintenancemode/start')
         .reply(200, response);
 
@@ -119,7 +123,7 @@ describe('Maintenance Mode Endpoint Tests', () => {
 
     it(`should throw an error when starting the maintenance mode`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .post('/api-public/v1/maintenancemode/start')
         .replyWithError('Something bad happened!');
 
@@ -140,7 +144,7 @@ describe('Maintenance Mode Endpoint Tests', () => {
 
     it(`should end the maintenance mode`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .put(`/api-public/v1/maintenancemode/${modeId}/end`)
         .reply(200, response);
 
@@ -155,7 +159,7 @@ describe('Maintenance Mode Endpoint Tests', () => {
 
     it(`should throw an error when ending the maintenance mode`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .put('/api-public/v1/maintenancemode/other-mode-id/end')
         .replyWithError('Something bad happened!');
 

@@ -29,6 +29,8 @@ the [VictorOps REST API](https://portal.victorops.com/public/api-docs.html).
   - [Scheduled Overrides](#scheduled-overrides)
   - [Rotations](#rotations)
   - [Webhooks](#webhooks)
+  - [Chat](#chat)
+  - [Notes](#notes)
   - [Maintenance Mode](#maintenance-mode)
 - [Change Log](#change-log)
 - [License](#license)
@@ -117,7 +119,8 @@ options are not provided, then the `VO_API_ID` and `VO_API_KEY` environment vari
 | `timeout`           | `5000`                       | Number of milliseconds before the request times out       |
 | `baseUrl`           | `https://api.victorops.com`  | The base URL for the VictorOps REST API                   |
 | `fullResponse`      | `false`                      | Get the full response instead of just the body            |
-| `maxContentLength`  | `2000`                       | The max size of the HTTP response content in bytes        |
+| `maxContentLength`  | `10000`                      | The max size of the HTTP response content in bytes        |
+| `maxBodyLength`     | `2000`                       | The max allowed size of the HTTP request body in bytes    |  
 
 ## Examples
 
@@ -199,7 +202,7 @@ async function getTeams() {
 
 The client instance has a named property for each of the public endpoints in the [VictorOps REST API](https://portal.victorops.com/public/api-docs.html). Each endpoint property contains methods that correspond to the operations associated with the endpoint (according to the VictorOps API). All named endpoint methods return a `Promise` which resolves with the response data or rejects with an error. Below are the endpoints and operations included with the client.
 
-Any endpoint operation that takes a `query` argument expects the value to be an `Object` that contains the query parameters for that particular endpoint operation. Please refer to the endpoint operation's documentation for the correct query parameters.
+Any endpoint operation that takes a `query` argument expects the value to be an `Object` that contains the query parameters for that particular endpoint operation. Please refer to the endpoint operation's documentation for the correct query parameters.  
 
 ### On-Call
 
@@ -207,6 +210,7 @@ Any endpoint operation that takes a `query` argument expects the value to be an 
 - **`client.oncall.getTeamSchedule(team, query)`** - Get a team's on-call schedule - [VictorOps Documentation](https://portal.victorops.com/public/api-docs.html#!/On45call/get_api_public_v2_team_team_oncall_schedule)  
 - **`client.oncall.getOncallUsers()`** - Get an organization's on-call users - [VictorOps Documentation](https://portal.victorops.com/public/api-docs.html#!/On45call/get_api_public_v1_oncall_current)  
 - **`client.oncall.createOncallOverride(policy, takeOncall)`** - Create an on-call override (take on-call) - [VictorOps Documentation](https://portal.victorops.com/public/api-docs.html#!/On45call/patch_api_public_v1_policies_policy_oncall_user)  
+<br />
 
 ### Incidents
 
@@ -216,16 +220,19 @@ Any endpoint operation that takes a `query` argument expects the value to be an 
 - **`client.incidents.rerouteIncidents(rules)`** - Reroute one or more incidents - [VictorOps Documentation](https://portal.victorops.com/public/api-docs.html#!/Incidents/post_api_public_v1_incidents_reroute)  
 - **`client.incidents.resolveIncidents(resolveInfo)`** - Resolve an incident or list of incidents - [VictorOps Documentation](https://portal.victorops.com/public/api-docs.html#!/Incidents/patch_api_public_v1_incidents_resolve)  
 - **`client.incidents.ackUserIncidents(ackInfo)`** - Acknowledge all incidents for which a user was paged - [VictorOps Documentation](https://portal.victorops.com/public/api-docs.html#!/Incidents/patch_api_public_v1_incidents_byUser_ack)  
-- **`client.incidents.resolveUserIncidents(resolveInfo)`** - Resolve all incidents for which a user was paged - [VictorOps Documentation](https://portal.victorops.com/public/api-docs.html#!/Incidents/patch_api_public_v1_incidents_byUser_resolve) 
+- **`client.incidents.resolveUserIncidents(resolveInfo)`** - Resolve all incidents for which a user was paged - [VictorOps Documentation](https://portal.victorops.com/public/api-docs.html#!/Incidents/patch_api_public_v1_incidents_byUser_resolve)  
+<br />
 
 ### Alerts
 
 - **`client.alerts.getAlert(uuid)`** - Get information about an alert - [VictorOps Documentation](https://portal.victorops.com/public/api-docs.html#!/Alerts/get_api_public_v1_alerts_uuid)  
+<br />
 
 ### Reporting
 
 - **`client.reporting.getShiftChanges(team, query)`** - Get a list of shift changes for a team - [VictorOps Documentation](https://portal.victorops.com/public/api-docs.html#!/Reporting/get_api_reporting_v1_team_team_oncall_log)  
 - **`client.reporting.getIncidentHistory(query)`** - Get/search incident history - [VictorOps Documentation](https://portal.victorops.com/public/api-docs.html#!/Reporting/get_api_reporting_v2_incidents)  
+<br />
 
 ### Users
 
@@ -236,6 +243,7 @@ Any endpoint operation that takes a `query` argument expects the value to be an 
 - **`client.users.getUser(user)`** - Get the information for the specified user - [VictorOps Documentation](https://portal.victorops.com/public/api-docs.html#!/Users/get_api_public_v1_user_user)  
 - **`client.users.updateUser(user, userInfo)`** - Update the designated user - [VictorOps Documentation](https://portal.victorops.com/public/api-docs.html#!/Users/put_api_public_v1_user_user)  
 - **`client.users.getTeams(user)`** - Get the user's team membership - [VictorOps Documentation](https://portal.victorops.com/public/api-docs.html#!/Users/get_api_public_v1_user_user_teams)  
+<br />
 
 ### User Contact Methods
 
@@ -252,16 +260,19 @@ Any endpoint operation that takes a `query` argument expects the value to be an 
 - **`client.contactMethods.createContactPhone(user, contactPhone)`** - Create a contact phone for a user - [VictorOps Documentation](https://portal.victorops.com/public/api-docs.html#!/User32Contact32Methods/post_api_public_v1_user_user_contact_methods_phones)  
 - **`client.contactMethods.deleteContactPhone(user, contactId)`** - Delete a contact phone for a user - [VictorOps Documentation](https://portal.victorops.com/public/api-docs.html#!/User32Contact32Methods/delete_api_public_v1_user_user_contact_methods_phones_contactId)  
 - **`client.contactMethods.getContactPhone(user, contactId)`** - Get a contact phone for a user - [VictorOps Documentation](https://portal.victorops.com/public/api-docs.html#!/User32Contact32Methods/get_api_public_v1_user_user_contact_methods_phones_contactId)  
+<br />
 
 ### User Paging Policies
 
 - **`client.userPagingPolicies.getPagingPolicies(user)`** - Get paging policies for a user - [VictorOps Documentation](https://portal.victorops.com/public/api-docs.html#!/User32Paging32Policies/get_api_public_v1_user_user_policies)  
+<br />
 
 ### Personal Paging Policy Values
 
 - **`client.pagingPolicyValues.getNotificationTypes()`** - Get the available notification types - [VictorOps Documentation](https://portal.victorops.com/public/api-docs.html#!/Personal32Paging32Policy32Values/get_api_public_v1_policies_types_notifications)  
 - **`client.pagingPolicyValues.getContactTypes()`** - Get the available contact types - [VictorOps Documentation](https://portal.victorops.com/public/api-docs.html#!/Personal32Paging32Policy32Values/get_api_public_v1_policies_types_contacts)  
 - **`client.pagingPolicyValues.getTimeoutValues()`** - Get the available timeout values - [VictorOps Documentation](https://portal.victorops.com/public/api-docs.html#!/Personal32Paging32Policy32Values/get_api_public_v1_policies_types_timeouts)  
+<br />
 
 ### Personal Paging Policies
 
@@ -273,6 +284,7 @@ Any endpoint operation that takes a `query` argument expects the value to be an 
 - **`client.personalPagingPolicies.deletePolicyStepRule(username, step, rule)`** - Deletes a rule for a paging policy step - [VictorOps Documentation](https://portal.victorops.com/public/api-docs.html#!/Personal32Paging32Policies/delete_api_public_v1_profile_username_policies_step_rule)  
 - **`client.personalPagingPolicies.getPolicyStepRule(username, step, rule)`** - Gets a rule for a paging policy step - [VictorOps Documentation](https://portal.victorops.com/public/api-docs.html#!/Personal32Paging32Policies/get_api_public_v1_profile_username_policies_step_rule)  
 - **`client.personalPagingPolicies.updatePolicyStepRule(username, step, rule, ruleInfo)`** - Updates a rule for a paging policy step - [VictorOps Documentation](https://portal.victorops.com/public/api-docs.html#!/Personal32Paging32Policies/put_api_public_v1_profile_username_policies_step_rule)  
+<br />
 
 ### Teams
 
@@ -285,6 +297,7 @@ Any endpoint operation that takes a `query` argument expects the value to be an 
 - **`client.teams.getMembers(team)`** - Get the team members for the specified team - [VictorOps Documentation](https://portal.victorops.com/public/api-docs.html#!/Teams/get_api_public_v1_team_team_members)  
 - **`client.teams.addMember(team, memberInfo)`** - Add a team member to the specified team - [VictorOps Documentation](https://portal.victorops.com/public/api-docs.html#!/Teams/post_api_public_v1_team_team_members)  
 - **`client.teams.removeMember(team, user, replacement)`** - Remove a team member from the specified team - [VictorOps Documentation](https://portal.victorops.com/public/api-docs.html#!/Teams/delete_api_public_v1_team_team_members_user)  
+<br />
 
 ### Escalation Policies
 
@@ -292,11 +305,13 @@ Any endpoint operation that takes a `query` argument expects the value to be an 
 - **`client.escalationPolicies.createPolicy(policyInfo)`** - Create an escalation policy - [VictorOps Documentation](https://portal.victorops.com/public/api-docs.html#!/Escalation32Policies/post_api_public_v1_policies)  
 - **`client.escalationPolicies.deletePolicy(policy)`** - Delete a specified escalation policy - [VictorOps Documentation](https://portal.victorops.com/public/api-docs.html#!/Escalation32Policies/delete_api_public_v1_policies_policy)  
 - **`client.escalationPolicies.getPolicy(policy)`** - Get a specific escalation policy - [VictorOps Documentation](https://portal.victorops.com/public/api-docs.html#!/Escalation32Policies/get_api_public_v1_policies_policy)  
+<br />
 
 ### Routing Keys
 
 - **`client.routingKeys.getRoutingKeys()`** - List routing keys and associated teams - [VictorOps Documentation](https://portal.victorops.com/public/api-docs.html#!/Routing32Keys/get_api_public_v1_org_routing_keys)  
 - **`client.routingKeys.createRoutingKey(keyInfo)`** - Create a new routing key with escalation policy mapping - [VictorOps Documentation](https://portal.victorops.com/public/api-docs.html#!/Routing32Keys/post_api_public_v1_org_routing_keys)  
+<br />
 
 ### Scheduled Overrides
 
@@ -308,26 +323,41 @@ Any endpoint operation that takes a `query` argument expects the value to be an 
 - **`client.scheduledOverrides.deleteAssignment(publicId, policySlug)`** - Delete a scheduled override assignment - [VictorOps Documentation](https://portal.victorops.com/public/api-docs.html#!/Scheduled32Overrides/delete_api_public_v1_overrides_publicId_assignments_policySlug)  
 - **`client.scheduledOverrides.getAssignment(publicId, policySlug)`** - Get the specified scheduled override assignments - [VictorOps Documentation](https://portal.victorops.com/public/api-docs.html#!/Scheduled32Overrides/get_api_public_v1_overrides_publicId_assignments_policySlug)  
 - **`client.scheduledOverrides.updateAssignment(publicId, policySlug, assignmentInfo)`** - Update a scheduled override assignment - [VictorOps Documentation](https://portal.victorops.com/public/api-docs.html#!/Scheduled32Overrides/put_api_public_v1_overrides_publicId_assignments_policySlug)  
+<br />
 
 ### Rotations
 
 - **`client.rotations.getRotationGroups(team)`** - Get a list of all rotation groups for a team - [VictorOps Documentation](https://portal.victorops.com/public/api-docs.html#!/Rotations/get_api_public_v1_teams_team_rotations)  
+<br />
 
 ### Webhooks
 
 - **`client.webhooks.getWebhooks()`** - Get a list of all the webhooks for an organization - [VictorOps Documentation](https://portal.victorops.com/public/api-docs.html#!/Webhooks/get_api_public_v1_webhooks)  
+<br />
+
+### Chat
+
+- **`client.chat.sendChat(chatInfo)`** - Send a chat message - [VictorOps Documentation](https://portal.victorops.com/public/api-docs.html#!/Chat/post_api_public_v1_chat)  
+<br />
+
+### Notes
+
+- **`client.notes.getNotes(incidentNumber)`** - Get the notes associated with an incident - [VictorOps Documentation](https://portal.victorops.com/public/api-docs.html#!/Notes/get_api_public_v1_incidents_incidentNumber_notes)  
+- **`client.notes.createNote(incidentNumber, noteInfo)`** - Create a new note for an incident - [VictorOps Documentation](https://portal.victorops.com/public/api-docs.html#!/Notes/post_api_public_v1_incidents_incidentNumber_notes)  
+- **`client.notes.deleteNote(incidentNumber, noteName)`** - Delete a note - [VictorOps Documentation](https://portal.victorops.com/public/api-docs.html#!/Notes/delete_api_public_v1_incidents_incidentNumber_notes_noteName)  
+- **`client.notes.updateNote(incidentNumber, noteName, noteInfo)`** - Update an existing note - [VictorOps Documentation](https://portal.victorops.com/public/api-docs.html#!/Notes/put_api_public_v1_incidents_incidentNumber_notes_noteName)  
+<br />
 
 ### Maintenance Mode
 
 - **`client.maintenanceMode.getModeState()`** - Get an organization's current maintenance mode state - [VictorOps Documentation](https://portal.victorops.com/public/api-docs.html#!/Maintenance32Mode/get_api_public_v1_maintenancemode)  
 - **`client.maintenanceMode.startMode(modeDef)`** - Start maintenance mode for routing keys - [VictorOps Documentation](https://portal.victorops.com/public/api-docs.html#!/Maintenance32Mode/post_api_public_v1_maintenancemode_start)  
 - **`client.maintenanceMode.endMode(modeId)`** - End maintenance mode for routing keys - [VictorOps Documentation](https://portal.victorops.com/public/api-docs.html#!/Maintenance32Mode/put_api_public_v1_maintenancemode_maintenancemodeid_end)  
+<br />
 
 ## Change Log
 
-### v1.0.0
-
-- Initial release
+The [CHANGELOG](./CHANGELOG.md) contains descriptions of notable changes.
 
 ## License
 

@@ -78,15 +78,14 @@ describe('VictorOps API Client Tests', () => {
     it(`should have a private '_options' property`, () => {
       let otherClient;
       
-      try {
-        expect(client).to.have.property('_options');
-        expect(client._options).to.be.an('object');
-        expect(client._options).to.eql(clientOptions);
+      expect(client).to.have.property('_options');
+      expect(client._options).to.be.an('object');
+      expect(client._options).to.eql(clientOptions);
 
+      expect(() => {
         otherClient = new VictorOpsApiClient();
-      } catch(err) {
-        expect(otherClient).to.be.undefined;
-      }
+      }).to.throw();
+      expect(otherClient).to.be.undefined;
     });
 
     it(`should have a private '_apiId' property`, () => {
@@ -122,13 +121,8 @@ describe('VictorOps API Client Tests', () => {
         apiKey: '99hf9a9fy9qhuav29sy53gds4ilsu'
       };
 
-      try {
-        client._checkOptions(options);
-      } catch(err) {
-        expect(err).to.be.an.instanceof(Error);
-        expect(err).to.have.property('message',
-          'A VictorOps Api ID is a required option.');
-      }
+      expect(() => client._checkOptions(options)).to.throw(Error,
+        'A VictorOps Api ID is a required option.');
     });
 
     it(`should throw an error when 'apiId' is empty`, () => {
@@ -137,13 +131,8 @@ describe('VictorOps API Client Tests', () => {
         apiKey: '99hf9a9fy9qhuav29sy53gds4ilsu'
       };
 
-      try {
-        client._checkOptions(options);
-      } catch(err) {
-        expect(err).to.be.an.instanceof(Error);
-        expect(err).to.have.property('message',
-          'A VictorOps Api ID is a required option.');
-      }
+      expect(() => client._checkOptions(options)).to.throw(Error,
+        'A VictorOps Api ID is a required option.');
     });
 
     it(`should throw an error when missing an 'apiKey'`, () => {
@@ -151,13 +140,8 @@ describe('VictorOps API Client Tests', () => {
         apiId: 'ufos9fwo9ls9s'
       };
 
-      try {
-        client._checkOptions(options);
-      } catch(err) {
-        expect(err).to.be.an.instanceof(Error);
-        expect(err).to.have.property('message',
-          'A VictorOps Api Key is a required option.');
-      }
+      expect(() => client._checkOptions(options)).to.throw(Error,
+        'A VictorOps Api Key is a required option.');
     });
 
     it(`should throw an error when 'apiKey' is empty`, () => {
@@ -166,13 +150,8 @@ describe('VictorOps API Client Tests', () => {
         apiKey: ''
       };
 
-      try {
-        client._checkOptions(options);
-      } catch(err) {
-        expect(err).to.be.an.instanceof(Error);
-        expect(err).to.have.property('message',
-          'A VictorOps Api Key is a required option.');
-      }
+      expect(() => client._checkOptions(options)).to.throw(Error,
+        'A VictorOps Api Key is a required option.');
     });
   });
 
@@ -196,26 +175,16 @@ describe('VictorOps API Client Tests', () => {
       client._apiId = null;
       client._apiKey = clientOptions.apiKey;
 
-      try {
-        client._getRequestHeaders();
-      } catch (err) {
-        expect(err).to.be.an.instanceof(Error);
-        expect(err).to.have.property('message',
-          'Missing the Api ID (apiId) or Api Key (apiKey).');
-      }
+      expect(() => client._getRequestHeaders()).to.throw(Error,
+        'Missing the Api ID (apiId) or Api Key (apiKey).');
     });
 
     it(`should throw an error when missing an 'apiKey'`, () => {
       client._apiId = clientOptions.apiId;
       client._apiKey = null;
 
-      try {
-        client._getRequestHeaders();
-      } catch (err) {
-        expect(err).to.be.an.instanceof(Error);
-        expect(err).to.have.property('message',
-          'Missing the Api ID (apiId) or Api Key (apiKey).');
-      }
+      expect(() => client._getRequestHeaders()).to.throw(Error,
+        'Missing the Api ID (apiId) or Api Key (apiKey).');
     });
   });
 
@@ -300,7 +269,7 @@ describe('VictorOps API Client Tests', () => {
 
     it('should return a VictorOps API response', async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, { reqheaders: client._headers })
         .get('/api-public/v1/user')
         .reply(200, response);
 
@@ -318,7 +287,7 @@ describe('VictorOps API Client Tests', () => {
 
     it('should return a full VictorOps API response', async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, { reqheaders: client._headers })
         .get('/api-public/v1/user')
         .reply(200, response);
 

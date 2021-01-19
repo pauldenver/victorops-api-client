@@ -15,6 +15,7 @@ const baseUrl = clientRewire.__get__('BASE_URL');
 
 describe('Users Endpoint Tests', () => {
   let client;
+  let reqHeaders;
 
   // Set the client options.
   const clientOptions = {
@@ -24,6 +25,9 @@ describe('Users Endpoint Tests', () => {
 
   beforeEach(() => {
     client = new VictorOpsApiClient(clientOptions);
+
+    // Get the headers from the instance.
+    reqHeaders = { reqheaders: client._headers };
   });
 
   context('#getUsers()', () => {
@@ -46,7 +50,7 @@ describe('Users Endpoint Tests', () => {
 
     it('should return a list of users', async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-public/v1/user')
         .reply(200, response);
 
@@ -64,7 +68,7 @@ describe('Users Endpoint Tests', () => {
 
     it('should throw an error when getting a list of users', async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-public/v1/user')
         .replyWithError('Something bad happened!');
 
@@ -89,7 +93,7 @@ describe('Users Endpoint Tests', () => {
 
     it('should return the details of the added user', async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .post('/api-public/v1/user')
         .reply(200, response);
 
@@ -111,7 +115,7 @@ describe('Users Endpoint Tests', () => {
 
     it('should throw an error when adding a user', async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .post('/api-public/v1/user')
         .replyWithError('Something bad happened!');
 
@@ -135,7 +139,7 @@ describe('Users Endpoint Tests', () => {
 
     it('should return the details of the added users', async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .post('/api-public/v1/user/batch')
         .reply(200, response);
 
@@ -157,7 +161,7 @@ describe('Users Endpoint Tests', () => {
 
     it('should throw an error when adding a user', async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .post('/api-public/v1/user/batch')
         .replyWithError('Something bad happened!');
 
@@ -175,7 +179,7 @@ describe('Users Endpoint Tests', () => {
 
     it('should successfully delete a user', async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .delete('/api-public/v1/user/johndoe')
         .reply(200, response);
 
@@ -191,7 +195,7 @@ describe('Users Endpoint Tests', () => {
 
     it('should throw an error when deleting a user', async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .delete('/api-public/v1/user/notjohndoe')
         .replyWithError('Something bad happened!');
 
@@ -217,7 +221,7 @@ describe('Users Endpoint Tests', () => {
 
     it('should return the information for a user', async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-public/v1/user/johndoe')
         .reply(200, response);
 
@@ -233,7 +237,7 @@ describe('Users Endpoint Tests', () => {
 
     it('should throw an error when getting the user information', async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-public/v1/user/notjohndoe')
         .replyWithError('Something bad happened!');
 
@@ -258,7 +262,7 @@ describe('Users Endpoint Tests', () => {
 
     it('should return the updated details of the user', async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .put('/api-public/v1/user/johndoe')
         .reply(200, response);
 
@@ -280,7 +284,7 @@ describe('Users Endpoint Tests', () => {
 
     it('should throw an error when updating a user', async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .put('/api-public/v1/user/notjohndoe')
         .replyWithError('Something bad happened!');
 
@@ -307,7 +311,7 @@ describe('Users Endpoint Tests', () => {
 
     it(`should return the user's team memberships`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-public/v1/user/johndoe/teams')
         .reply(200, response);
 
@@ -323,7 +327,7 @@ describe('Users Endpoint Tests', () => {
 
     it(`should throw an error when getting the user's teams`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-public/v1/user/notjohndoe/teams')
         .replyWithError('Something bad happened!');
 

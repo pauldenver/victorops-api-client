@@ -13,14 +13,14 @@ const expect = chai.expect;
 const clientRewire = rewire('../../lib/victorops_api_client');
 const baseUrl = clientRewire.__get__('BASE_URL');
 
-describe('Rotations Endpoint Tests', () => {
+describe('Chat Endpoint Tests', () => {
   let client;
   let reqHeaders;
 
   // Set the client options.
   const clientOptions = {
     apiId: '4db9c3ea',
-    apiKey: '4eeb5d430d2ae2fe18d54f0c95707539'
+    apiKey: '4eeb5d430d2ae2fe18d54f0c95707539',
   };
 
   beforeEach(() => {
@@ -30,42 +30,39 @@ describe('Rotations Endpoint Tests', () => {
     reqHeaders = { reqheaders: client._headers };
   });
 
-  context('#getRotationGroups()', () => {
-    const response = {
-      rotationGroups: [
-        {
-          teamSlug: 'team-btVkW4cvMvM5h5yv',
-          slug: 'rtg-91CXHetYQHBLhmPV',
-          label: 'Team Rotation'
-        }
-      ]
-    };
-
-    it(`should return a list of all rotation groups`, async () => {
+  context('#sendChat()', () => {
+    it(`should send a chat message`, async () => {
       // Mock the API request.
       nock(baseUrl, reqHeaders)
-        .get('/api-public/v1/teams/team-btVkW4cvMvM5h5yv/rotations')
-        .reply(200, response);
+        .post('/api-public/v1/chat')
+        .twice()
+        .reply(200, {});
 
-      const groups = await client.rotations.getRotationGroups(
-        'team-btVkW4cvMvM5h5yv');
+      let resp = await client.chat.sendChat({
+        username: 'johndoe',
+        externalUsername: 'johndoe',
+        text: 'Hi, John!',
+        monitoringTool: 'email',
+      });
 
-      expect(client.rotations.getRotationGroups).to.be.a('function');
-      expect(groups).to.eql(response);
+      expect(client.chat.sendChat).to.be.a('function');
+      expect(resp).to.eql({});
+
+      resp = await client.chat.sendChat();
+
+      expect(resp).to.eql({});
 
       // Remove the mocks.
       nock.cleanAll();
     });
 
-    it(`should throw an error when getting the rotation groups`, async () => {
+    it(`should throw an error when sending a chat message`, async () => {
       // Mock the API request.
       nock(baseUrl, reqHeaders)
-        .get('/api-public/v1/teams/some-other-team/rotations')
+        .post('/api-public/v1/chat')
         .replyWithError('Something bad happened!');
 
-      await expect(
-        client.rotations.getRotationGroups('some-other-team')
-      ).to.be.rejectedWith(Error);
+      await expect(client.chat.sendChat({})).to.be.rejectedWith(Error);
 
       // Remove the mocks.
       nock.cleanAll();

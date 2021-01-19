@@ -15,6 +15,7 @@ const baseUrl = clientRewire.__get__('BASE_URL');
 
 describe('On-Call Endpoint Tests', () => {
   let client;
+  let reqHeaders;
 
   // Set the client options.
   const clientOptions = {
@@ -24,6 +25,9 @@ describe('On-Call Endpoint Tests', () => {
 
   beforeEach(() => {
     client = new VictorOpsApiClient(clientOptions);
+
+    // Get the headers from the instance.
+    reqHeaders = { reqheaders: client._headers };
   });
 
   context('#getUserSchedule()', () => {
@@ -58,7 +62,7 @@ describe('On-Call Endpoint Tests', () => {
 
     it(`should return the user's on-call schedule`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-public/v2/user/johndoe/oncall/schedule')
         .reply(200, response);
 
@@ -76,7 +80,7 @@ describe('On-Call Endpoint Tests', () => {
 
     it(`should throw an error when getting a user's on-call schedule`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-public/v2/user/notjohndoe/oncall/schedule')
         .replyWithError('Something bad happened!');
 
@@ -117,7 +121,7 @@ describe('On-Call Endpoint Tests', () => {
 
     it(`should return the team's on-call schedule`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-public/v2/team/team-00VkR4NvJvM5h9Ae/oncall/schedule')
         .reply(200, response);
 
@@ -134,7 +138,7 @@ describe('On-Call Endpoint Tests', () => {
 
     it(`should throw an error when getting a team's on-call schedule`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-public/v2/team/team-whatever/oncall/schedule')
         .replyWithError('Something bad happened!');
 
@@ -176,7 +180,7 @@ describe('On-Call Endpoint Tests', () => {
 
     it(`should return the current on-call users/teams schedule`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-public/v1/oncall/current')
         .reply(200, response);
 
@@ -194,7 +198,7 @@ describe('On-Call Endpoint Tests', () => {
 
     it(`should throw an error when getting the current on-call users/teams schedule`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-public/v1/oncall/current')
         .replyWithError('Something bad happened!');
 
@@ -212,7 +216,7 @@ describe('On-Call Endpoint Tests', () => {
 
     it(`should replace the current on-call user`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .patch('/api-public/v1/policies/team-00VkR4NvJvM5h9Ae/oncall/user')
         .reply(200, response);
 
@@ -232,7 +236,7 @@ describe('On-Call Endpoint Tests', () => {
 
     it(`should throw an error when replacing the current on-call user`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .patch('/api-public/v1/policies/team-whatever/oncall/user')
         .replyWithError('Something bad happened!');
 

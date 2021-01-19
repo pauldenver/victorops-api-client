@@ -15,6 +15,7 @@ const baseUrl = clientRewire.__get__('BASE_URL');
 
 describe('Teams Endpoint Tests', () => {
   let client;
+  let reqHeaders;
 
   // Set the client options.
   const clientOptions = {
@@ -24,6 +25,9 @@ describe('Teams Endpoint Tests', () => {
 
   beforeEach(() => {
     client = new VictorOpsApiClient(clientOptions);
+
+    // Get the headers from the instance.
+    reqHeaders = { reqheaders: client._headers };
   });
 
   context('#getTeams()', () => {
@@ -43,7 +47,7 @@ describe('Teams Endpoint Tests', () => {
 
     it('should return a list of teams', async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-public/v1/team')
         .reply(200, response);
 
@@ -59,7 +63,7 @@ describe('Teams Endpoint Tests', () => {
 
     it('should throw an error when getting a list of teams', async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-public/v1/team')
         .replyWithError('Something bad happened!');
 
@@ -85,7 +89,7 @@ describe('Teams Endpoint Tests', () => {
 
     it('should create a team', async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .post('/api-public/v1/team')
         .reply(200, response);
 
@@ -101,7 +105,7 @@ describe('Teams Endpoint Tests', () => {
 
     it('should throw an error when creating a team', async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .post('/api-public/v1/team')
         .replyWithError('Something bad happened!');
 
@@ -127,7 +131,7 @@ describe('Teams Endpoint Tests', () => {
 
     it('should remove a team', async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .delete(`/api-public/v1/team/${response.slug}`)
         .reply(200, response);
 
@@ -143,7 +147,7 @@ describe('Teams Endpoint Tests', () => {
 
     it('should throw an error when removing a team', async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .delete('/api-public/v1/team/some-other-team')
         .replyWithError('Something bad happened!');
 
@@ -171,7 +175,7 @@ describe('Teams Endpoint Tests', () => {
 
     it('should return information for a team', async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get(`/api-public/v1/team/${response.slug}`)
         .reply(200, response);
 
@@ -187,7 +191,7 @@ describe('Teams Endpoint Tests', () => {
 
     it('should throw an error when getting team information', async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-public/v1/team/some-other-team')
         .replyWithError('Something bad happened!');
 
@@ -215,7 +219,7 @@ describe('Teams Endpoint Tests', () => {
 
     it('should update a team', async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .put(`/api-public/v1/team/${response.slug}`)
         .reply(200, response);
 
@@ -232,7 +236,7 @@ describe('Teams Endpoint Tests', () => {
 
     it('should throw an error when updating a team', async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .put('/api-public/v1/team/some-other-team')
         .replyWithError('Something bad happened!');
 
@@ -262,7 +266,7 @@ describe('Teams Endpoint Tests', () => {
 
     it('should return a list of team admins', async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-public/v1/team/team-btVkW4cvMvM5h5yv/admins')
         .reply(200, response);
 
@@ -278,7 +282,7 @@ describe('Teams Endpoint Tests', () => {
 
     it('should throw an error when getting team admins', async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-public/v1/team/some-other-team/admins')
         .replyWithError('Something bad happened!');
 
@@ -308,7 +312,7 @@ describe('Teams Endpoint Tests', () => {
 
     it('should return a list of team members', async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-public/v1/team/team-btVkW4cvMvM5h5yv/members')
         .reply(200, response);
 
@@ -324,7 +328,7 @@ describe('Teams Endpoint Tests', () => {
 
     it('should throw an error when getting team members', async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-public/v1/team/some-other-team/members')
         .replyWithError('Something bad happened!');
 
@@ -361,7 +365,7 @@ describe('Teams Endpoint Tests', () => {
 
     it('should add a member to a team', async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .post('/api-public/v1/team/team-btVkW4cvMvM5h5yv/members')
         .reply(200, response);
 
@@ -378,7 +382,7 @@ describe('Teams Endpoint Tests', () => {
 
     it('should throw an error when adding a team member', async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .post('/api-public/v1/team/some-other-team/members')
         .replyWithError('Something bad happened!');
 
@@ -408,7 +412,7 @@ describe('Teams Endpoint Tests', () => {
 
     it('should remove a member from a team', async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .delete('/api-public/v1/team/team-btVkW4cvMvM5h5yv/members/johnsmith')
         .reply(200, response);
 
@@ -425,7 +429,7 @@ describe('Teams Endpoint Tests', () => {
 
     it('should throw an error when removing a team member', async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .delete('/api-public/v1/team/some-other-team/members/notjohnsmith')
         .replyWithError('Something bad happened!');
 

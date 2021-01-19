@@ -15,6 +15,7 @@ const baseUrl = clientRewire.__get__('BASE_URL');
 
 describe('Scheduled Overrides Endpoint Tests', () => {
   let client;
+  let reqHeaders;
 
   // Set the client options.
   const clientOptions = {
@@ -24,6 +25,9 @@ describe('Scheduled Overrides Endpoint Tests', () => {
 
   beforeEach(() => {
     client = new VictorOpsApiClient(clientOptions);
+
+    // Get the headers from the instance.
+    reqHeaders = { reqheaders: client._headers };
   });
 
   context('#getOverrides()', () => {
@@ -55,7 +59,7 @@ describe('Scheduled Overrides Endpoint Tests', () => {
 
     it(`should return a list of scheduled overrides`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-public/v1/overrides')
         .reply(200, response);
 
@@ -70,7 +74,7 @@ describe('Scheduled Overrides Endpoint Tests', () => {
 
     it(`should throw an error when getting the scheduled overrides`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-public/v1/overrides')
         .replyWithError('Something bad happened!');
 
@@ -110,7 +114,7 @@ describe('Scheduled Overrides Endpoint Tests', () => {
 
     it(`should create a scheduled override`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .post('/api-public/v1/overrides')
         .reply(200, response);
 
@@ -130,7 +134,7 @@ describe('Scheduled Overrides Endpoint Tests', () => {
 
     it(`should throw an error when creating a scheduled override`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .post('/api-public/v1/overrides')
         .replyWithError('Something bad happened!');
 
@@ -170,7 +174,7 @@ describe('Scheduled Overrides Endpoint Tests', () => {
 
     it(`should delete a scheduled override`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .delete('/api-public/v1/overrides/ovrprd-ht7Jt1reA82KBrOP')
         .reply(200, response);
 
@@ -186,7 +190,7 @@ describe('Scheduled Overrides Endpoint Tests', () => {
 
     it(`should throw an error when deleting a scheduled override`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .delete('/api-public/v1/overrides/another-override')
         .replyWithError('Something bad happened!');
 
@@ -226,7 +230,7 @@ describe('Scheduled Overrides Endpoint Tests', () => {
 
     it(`should return a scheduled override`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-public/v1/overrides/ovrprd-ht7Jt1reA82KBrOP')
         .reply(200, response);
 
@@ -242,7 +246,7 @@ describe('Scheduled Overrides Endpoint Tests', () => {
 
     it(`should throw an error when getting a scheduled override`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-public/v1/overrides/another-override')
         .replyWithError('Something bad happened!');
 
@@ -271,7 +275,7 @@ describe('Scheduled Overrides Endpoint Tests', () => {
 
     it(`should return a list of scheduled override assignments`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-public/v1/overrides/ovrprd-ht7Jt1reA82KBrOP/assignments')
         .reply(200, response);
 
@@ -287,7 +291,7 @@ describe('Scheduled Overrides Endpoint Tests', () => {
 
     it(`should throw an error when getting scheduled override assignments`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-public/v1/overrides/another-override/assignments')
         .replyWithError('Something bad happened!');
 
@@ -313,7 +317,7 @@ describe('Scheduled Overrides Endpoint Tests', () => {
 
     it(`should delete a scheduled override assignment`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .delete(`/api-public/v1/overrides/${overrideId}/assignments/${policySlug}`)
         .reply(200, response);
 
@@ -329,7 +333,7 @@ describe('Scheduled Overrides Endpoint Tests', () => {
 
     it(`should throw an error when deleting a scheduled override assignment`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .delete('/api-public/v1/overrides/another-override/assignments/another-policy')
         .replyWithError('Something bad happened!');
 
@@ -356,7 +360,7 @@ describe('Scheduled Overrides Endpoint Tests', () => {
 
     it(`should return a scheduled override assignment`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get(`/api-public/v1/overrides/${overrideId}/assignments/${policySlug}`)
         .reply(200, response);
 
@@ -372,7 +376,7 @@ describe('Scheduled Overrides Endpoint Tests', () => {
 
     it(`should throw an error when getting a scheduled override assignment`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-public/v1/overrides/another-override/assignments/another-policy')
         .replyWithError('Something bad happened!');
 
@@ -400,7 +404,7 @@ describe('Scheduled Overrides Endpoint Tests', () => {
 
     it(`should update a scheduled override assignment`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .put(`/api-public/v1/overrides/${overrideId}/assignments/${policySlug}`)
         .reply(200, response);
 
@@ -419,7 +423,7 @@ describe('Scheduled Overrides Endpoint Tests', () => {
 
     it(`should throw an error when updating a scheduled override assignment`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .put('/api-public/v1/overrides/another-override/assignments/another-policy')
         .replyWithError('Something bad happened!');
 

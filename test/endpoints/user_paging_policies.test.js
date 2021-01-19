@@ -15,6 +15,7 @@ const baseUrl = clientRewire.__get__('BASE_URL');
 
 describe('User Paging Policies Endpoint Tests', () => {
   let client;
+  let reqHeaders;
 
   // Set the client options.
   const clientOptions = {
@@ -24,6 +25,9 @@ describe('User Paging Policies Endpoint Tests', () => {
 
   beforeEach(() => {
     client = new VictorOpsApiClient(clientOptions);
+
+    // Get the headers from the instance.
+    reqHeaders = { reqheaders: client._headers };
   });
 
   context('#getPagingPolicies()', () => {
@@ -42,7 +46,7 @@ describe('User Paging Policies Endpoint Tests', () => {
 
     it(`should return a list of paging policies for a user`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get(`/api-public/v1/user/${response.username}/policies`)
         .reply(200, response);
 
@@ -58,7 +62,7 @@ describe('User Paging Policies Endpoint Tests', () => {
 
     it(`should throw an error when getting a list of paging policies`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-public/v1/user/notjohndoe/policies')
         .replyWithError('Something bad happened!');
 

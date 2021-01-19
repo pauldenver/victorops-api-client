@@ -15,6 +15,7 @@ const baseUrl = clientRewire.__get__('BASE_URL');
 
 describe('Escalation Policies Endpoint Tests', () => {
   let client;
+  let reqHeaders;
 
   // Set the client options.
   const clientOptions = {
@@ -24,6 +25,9 @@ describe('Escalation Policies Endpoint Tests', () => {
 
   beforeEach(() => {
     client = new VictorOpsApiClient(clientOptions);
+
+    // Get the headers from the instance.
+    reqHeaders = { reqheaders: client._headers };
   });
 
   context('#getPolicies()', () => {
@@ -45,7 +49,7 @@ describe('Escalation Policies Endpoint Tests', () => {
 
     it(`should return a list of escalation policies`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-public/v1/policies')
         .reply(200, response);
 
@@ -60,7 +64,7 @@ describe('Escalation Policies Endpoint Tests', () => {
 
     it(`should throw an error when getting the escalation policies`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-public/v1/policies')
         .replyWithError('Something bad happened!');
 
@@ -111,7 +115,7 @@ describe('Escalation Policies Endpoint Tests', () => {
 
     it(`should create an escalation policy`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .post('/api-public/v1/policies')
         .reply(200, response);
 
@@ -155,7 +159,7 @@ describe('Escalation Policies Endpoint Tests', () => {
 
     it(`should throw an error when creating an escalation policy`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .post('/api-public/v1/policies')
         .replyWithError('Something bad happened!');
 
@@ -175,7 +179,7 @@ describe('Escalation Policies Endpoint Tests', () => {
 
     it(`should delete an escalation policy`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .delete('/api-public/v1/policies/pol-91foBRP82kKbkuHr')
         .reply(200, response);
 
@@ -191,7 +195,7 @@ describe('Escalation Policies Endpoint Tests', () => {
 
     it(`should throw an error when deleting an escalation policy`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .delete('/api-public/v1/policies/some-other-policy')
         .replyWithError('Something bad happened!');
 
@@ -228,7 +232,7 @@ describe('Escalation Policies Endpoint Tests', () => {
 
     it(`should return an escalation policy`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-public/v1/policies/team-00VkR4NvJvM5h9Ae')
         .reply(200, response);
 
@@ -244,7 +248,7 @@ describe('Escalation Policies Endpoint Tests', () => {
 
     it(`should throw an error when getting an escalation policy`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-public/v1/policies/some-other-policy')
         .replyWithError('Something bad happened!');
 

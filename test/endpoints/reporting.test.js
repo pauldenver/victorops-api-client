@@ -15,6 +15,7 @@ const baseUrl = clientRewire.__get__('BASE_URL');
 
 describe('Reporting Endpoint Tests', () => {
   let client;
+  let reqHeaders;
 
   // Set the client options.
   const clientOptions = {
@@ -24,6 +25,9 @@ describe('Reporting Endpoint Tests', () => {
 
   beforeEach(() => {
     client = new VictorOpsApiClient(clientOptions);
+
+    // Get the headers from the instance.
+    reqHeaders = { reqheaders: client._headers };
   });
 
   context('#getShiftChanges()', () => {
@@ -37,7 +41,7 @@ describe('Reporting Endpoint Tests', () => {
 
     it(`should return a list of shift changes for a team`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get(`/api-reporting/v1/team/${response.teamSlug}/oncall/log`)
         .reply(200, response);
 
@@ -53,7 +57,7 @@ describe('Reporting Endpoint Tests', () => {
 
     it(`should throw an error when getting the shift changes`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-reporting/v1/team/some-other-team/oncall/log')
         .replyWithError('Something bad happened!');
 
@@ -116,7 +120,7 @@ describe('Reporting Endpoint Tests', () => {
 
     it(`should return the incident history information`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-reporting/v2/incidents')
         .query({ currentPhase: 'triggered' })
         .reply(200, response);
@@ -133,7 +137,7 @@ describe('Reporting Endpoint Tests', () => {
 
     it(`should throw an error when getting the incident history`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-reporting/v2/incidents')
         .replyWithError('Something bad happened!');
 

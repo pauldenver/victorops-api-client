@@ -15,6 +15,7 @@ const baseUrl = clientRewire.__get__('BASE_URL');
 
 describe('Personal Paging Policies Endpoint Tests', () => {
   let client;
+  let reqHeaders;
 
   // Set the client options.
   const clientOptions = {
@@ -24,6 +25,9 @@ describe('Personal Paging Policies Endpoint Tests', () => {
 
   beforeEach(() => {
     client = new VictorOpsApiClient(clientOptions);
+
+    // Get the headers from the instance.
+    reqHeaders = { reqheaders: client._headers };
   });
 
   context('#getPagingPolicy()', () => {
@@ -49,7 +53,7 @@ describe('Personal Paging Policies Endpoint Tests', () => {
 
     it(`should return the user's paging policy`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-public/v1/profile/johndoe/policies')
         .reply(200, response);
 
@@ -64,7 +68,7 @@ describe('Personal Paging Policies Endpoint Tests', () => {
 
     it(`should throw an error when getting the user's paging policy`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-public/v1/profile/notjohndoe/policies')
         .replyWithError('Something bad happened!');
 
@@ -98,7 +102,7 @@ describe('Personal Paging Policies Endpoint Tests', () => {
 
     it(`should create paging policy step`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .post('/api-public/v1/profile/johndoe/policies')
         .reply(200, response);
 
@@ -128,7 +132,7 @@ describe('Personal Paging Policies Endpoint Tests', () => {
 
     it(`should throw an error when creating paging policy step`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .post('/api-public/v1/profile/notjohndoe/policies')
         .replyWithError('Something bad happened!');
 
@@ -162,7 +166,7 @@ describe('Personal Paging Policies Endpoint Tests', () => {
 
     it(`should return a paging policy step`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get(`/api-public/v1/profile/johndoe/policies/${response.step.index}`)
         .reply(200, response);
 
@@ -178,7 +182,7 @@ describe('Personal Paging Policies Endpoint Tests', () => {
 
     it(`should throw an error when getting a paging policy step`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-public/v1/profile/notjohndoe/policies/999')
         .replyWithError('Something bad happened!');
 
@@ -206,7 +210,7 @@ describe('Personal Paging Policies Endpoint Tests', () => {
 
     it(`should create a rule for a paging policy step`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .post('/api-public/v1/profile/johndoe/policies/0')
         .reply(200, response);
 
@@ -230,7 +234,7 @@ describe('Personal Paging Policies Endpoint Tests', () => {
 
     it(`should throw an error when creating a rule for a paging policy step`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .post('/api-public/v1/profile/notjohndoe/policies/999')
         .replyWithError('Something bad happened!');
 
@@ -264,7 +268,7 @@ describe('Personal Paging Policies Endpoint Tests', () => {
 
     it(`should update a paging policy step`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .put('/api-public/v1/profile/johndoe/policies/0')
         .reply(200, response);
 
@@ -294,7 +298,7 @@ describe('Personal Paging Policies Endpoint Tests', () => {
 
     it(`should throw an error when updating paging policy step`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .put('/api-public/v1/profile/notjohndoe/policies/999')
         .replyWithError('Something bad happened!');
 
@@ -322,7 +326,7 @@ describe('Personal Paging Policies Endpoint Tests', () => {
 
     it(`should delete a rule for a paging policy step`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .delete('/api-public/v1/profile/johndoe/policies/0/1')
         .reply(200, response);
 
@@ -338,7 +342,7 @@ describe('Personal Paging Policies Endpoint Tests', () => {
 
     it(`should throw an error when deleting a rule for a paging policy step`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .delete('/api-public/v1/profile/notjohndoe/policies/999/99')
         .replyWithError('Something bad happened!');
 
@@ -366,7 +370,7 @@ describe('Personal Paging Policies Endpoint Tests', () => {
 
     it(`should return a rule for a paging policy step`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-public/v1/profile/johndoe/policies/0/0')
         .reply(200, response);
 
@@ -382,7 +386,7 @@ describe('Personal Paging Policies Endpoint Tests', () => {
 
     it(`should throw an error when getting a rule for a paging policy step`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-public/v1/profile/notjohndoe/policies/999/99')
         .replyWithError('Something bad happened!');
 
@@ -410,7 +414,7 @@ describe('Personal Paging Policies Endpoint Tests', () => {
 
     it(`should update a rule for a paging policy step`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .put('/api-public/v1/profile/johndoe/policies/0/3')
         .reply(200, response);
 
@@ -434,7 +438,7 @@ describe('Personal Paging Policies Endpoint Tests', () => {
 
     it(`should throw an error when updating a rule for a paging policy step`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .put('/api-public/v1/profile/notjohndoe/policies/999/99')
         .replyWithError('Something bad happened!');
 

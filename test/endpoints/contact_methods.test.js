@@ -15,6 +15,7 @@ const baseUrl = clientRewire.__get__('BASE_URL');
 
 describe('User Contact Methods Endpoint Tests', () => {
   let client;
+  let reqHeaders;
 
   // Set the client options.
   const clientOptions = {
@@ -24,6 +25,9 @@ describe('User Contact Methods Endpoint Tests', () => {
 
   beforeEach(() => {
     client = new VictorOpsApiClient(clientOptions);
+
+    // Get the headers from the instance.
+    reqHeaders = { reqheaders: client._headers };
   });
 
   context('#getContactMethods()', () => {
@@ -77,7 +81,7 @@ describe('User Contact Methods Endpoint Tests', () => {
 
     it(`should return a list of contact methods for a user`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-public/v1/user/johndoe/contact-methods')
         .reply(200, response);
 
@@ -92,7 +96,7 @@ describe('User Contact Methods Endpoint Tests', () => {
 
     it(`should throw an error when getting a list of contact methods`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-public/v1/user/notjohndoe/contact-methods')
         .replyWithError('Something bad happened!');
 
@@ -122,7 +126,7 @@ describe('User Contact Methods Endpoint Tests', () => {
 
     it(`should return a list of contact devices for a user`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-public/v1/user/johndoe/contact-methods/devices')
         .reply(200, response);
 
@@ -137,7 +141,7 @@ describe('User Contact Methods Endpoint Tests', () => {
 
     it(`should throw an error when getting a list of contact devices`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-public/v1/user/notjohndoe/contact-methods/devices')
         .replyWithError('Something bad happened!');
 
@@ -163,7 +167,7 @@ describe('User Contact Methods Endpoint Tests', () => {
 
     it(`should delete a contact device for a user`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .delete(`/api-public/v1/user/johndoe/contact-methods/devices/${deviceId}`)
         .reply(200, response);
 
@@ -179,7 +183,7 @@ describe('User Contact Methods Endpoint Tests', () => {
 
     it(`should throw an error when deleting a contact device`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .delete('/api-public/v1/user/notjohndoe/contact-methods/devices/something')
         .replyWithError('Something bad happened!');
 
@@ -206,7 +210,7 @@ describe('User Contact Methods Endpoint Tests', () => {
 
     it(`should return a contact device for a user`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get(`/api-public/v1/user/johndoe/contact-methods/devices/${deviceId}`)
         .reply(200, response);
 
@@ -222,7 +226,7 @@ describe('User Contact Methods Endpoint Tests', () => {
 
     it(`should throw an error when getting a contact device`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-public/v1/user/notjohndoe/contact-methods/devices/something')
         .replyWithError('Something bad happened!');
 
@@ -249,7 +253,7 @@ describe('User Contact Methods Endpoint Tests', () => {
 
     it(`should update a contact device for a user`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .put(`/api-public/v1/user/johndoe/contact-methods/devices/${deviceId}`)
         .reply(200, response);
 
@@ -272,7 +276,7 @@ describe('User Contact Methods Endpoint Tests', () => {
 
     it(`should throw an error when updating a contact device`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .put('/api-public/v1/user/notjohndoe/contact-methods/devices/something')
         .replyWithError('Something bad happened!');
 
@@ -305,7 +309,7 @@ describe('User Contact Methods Endpoint Tests', () => {
 
     it(`should return a list of contact emails for a user`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-public/v1/user/johndoe/contact-methods/emails')
         .reply(200, response);
 
@@ -320,7 +324,7 @@ describe('User Contact Methods Endpoint Tests', () => {
 
     it(`should throw an error when getting a list of contact emails`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-public/v1/user/notjohndoe/contact-methods/emails')
         .replyWithError('Something bad happened!');
 
@@ -348,7 +352,7 @@ describe('User Contact Methods Endpoint Tests', () => {
 
     it(`should create a contact email for a user`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .post('/api-public/v1/user/johndoe/contact-methods/emails')
         .reply(200, response);
 
@@ -367,7 +371,7 @@ describe('User Contact Methods Endpoint Tests', () => {
 
     it(`should throw an error when creating a contact email`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .post('/api-public/v1/user/notjohndoe/contact-methods/emails')
         .replyWithError('Something bad happened!');
 
@@ -397,7 +401,7 @@ describe('User Contact Methods Endpoint Tests', () => {
 
     it(`should delete a contact email for a user`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .delete(`/api-public/v1/user/johndoe/contact-methods/emails/${contactId}`)
         .reply(200, response);
 
@@ -413,7 +417,7 @@ describe('User Contact Methods Endpoint Tests', () => {
 
     it(`should throw an error when deleting a contact email`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .delete('/api-public/v1/user/notjohndoe/contact-methods/devices/something')
         .replyWithError('Something bad happened!');
 
@@ -443,7 +447,7 @@ describe('User Contact Methods Endpoint Tests', () => {
 
     it(`should return a contact email for a user`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get(`/api-public/v1/user/johndoe/contact-methods/emails/${contactId}`)
         .reply(200, response);
 
@@ -459,7 +463,7 @@ describe('User Contact Methods Endpoint Tests', () => {
 
     it(`should throw an error when getting a contact email`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-public/v1/user/notjohndoe/contact-methods/emails/something')
         .replyWithError('Something bad happened!');
 
@@ -492,7 +496,7 @@ describe('User Contact Methods Endpoint Tests', () => {
 
     it(`should return a list of contact phones for a user`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-public/v1/user/johndoe/contact-methods/phones')
         .reply(200, response);
 
@@ -507,7 +511,7 @@ describe('User Contact Methods Endpoint Tests', () => {
 
     it(`should throw an error when getting a list of contact phones`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-public/v1/user/notjohndoe/contact-methods/phones')
         .replyWithError('Something bad happened!');
 
@@ -535,7 +539,7 @@ describe('User Contact Methods Endpoint Tests', () => {
 
     it(`should create a contact phone for a user`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .post('/api-public/v1/user/johndoe/contact-methods/phones')
         .reply(200, response);
 
@@ -554,7 +558,7 @@ describe('User Contact Methods Endpoint Tests', () => {
 
     it(`should throw an error when creating a contact phone`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .post('/api-public/v1/user/notjohndoe/contact-methods/phones')
         .replyWithError('Something bad happened!');
 
@@ -584,7 +588,7 @@ describe('User Contact Methods Endpoint Tests', () => {
 
     it(`should delete a contact phone for a user`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .delete(`/api-public/v1/user/johndoe/contact-methods/phones/${contactId}`)
         .reply(200, response);
 
@@ -600,7 +604,7 @@ describe('User Contact Methods Endpoint Tests', () => {
 
     it(`should throw an error when deleting a contact phone`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .delete('/api-public/v1/user/notjohndoe/contact-methods/devices/something')
         .replyWithError('Something bad happened!');
 
@@ -630,7 +634,7 @@ describe('User Contact Methods Endpoint Tests', () => {
 
     it(`should return a contact phone for a user`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get(`/api-public/v1/user/johndoe/contact-methods/phones/${contactId}`)
         .reply(200, response);
 
@@ -646,7 +650,7 @@ describe('User Contact Methods Endpoint Tests', () => {
 
     it(`should throw an error when getting a contact phone`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-public/v1/user/notjohndoe/contact-methods/phones/something')
         .replyWithError('Something bad happened!');
 

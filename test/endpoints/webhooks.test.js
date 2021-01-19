@@ -15,6 +15,7 @@ const baseUrl = clientRewire.__get__('BASE_URL');
 
 describe('Webhooks Endpoint Tests', () => {
   let client;
+  let reqHeaders;
 
   // Set the client options.
   const clientOptions = {
@@ -24,6 +25,9 @@ describe('Webhooks Endpoint Tests', () => {
 
   beforeEach(() => {
     client = new VictorOpsApiClient(clientOptions);
+
+    // Get the headers from the instance.
+    reqHeaders = { reqheaders: client._headers };
   });
 
   context('#getWebhooks()', () => {
@@ -39,7 +43,7 @@ describe('Webhooks Endpoint Tests', () => {
 
     it(`should return a list of webhooks`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-public/v1/webhooks')
         .reply(200, response);
 
@@ -54,7 +58,7 @@ describe('Webhooks Endpoint Tests', () => {
 
     it(`should throw an error when getting the webhooks`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-public/v1/webhooks')
         .replyWithError('Something bad happened!');
 

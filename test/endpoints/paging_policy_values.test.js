@@ -15,6 +15,7 @@ const baseUrl = clientRewire.__get__('BASE_URL');
 
 describe('Personal Paging Policy Values Endpoint Tests', () => {
   let client;
+  let reqHeaders;
 
   // Set the client options.
   const clientOptions = {
@@ -24,6 +25,9 @@ describe('Personal Paging Policy Values Endpoint Tests', () => {
 
   beforeEach(() => {
     client = new VictorOpsApiClient(clientOptions);
+
+    // Get the headers from the instance.
+    reqHeaders = { reqheaders: client._headers };
   });
 
   context('#getNotificationTypes()', () => {
@@ -51,7 +55,7 @@ describe('Personal Paging Policy Values Endpoint Tests', () => {
 
     it(`should return the available notification types`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-public/v1/policies/types/notifications')
         .reply(200, response);
 
@@ -66,7 +70,7 @@ describe('Personal Paging Policy Values Endpoint Tests', () => {
 
     it(`should throw an error when getting the notification types`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-public/v1/policies/types/notifications')
         .replyWithError('Something bad happened!');
 
@@ -96,7 +100,7 @@ describe('Personal Paging Policy Values Endpoint Tests', () => {
 
     it(`should return the available contact types`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-public/v1/policies/types/contacts')
         .reply(200, response);
 
@@ -111,7 +115,7 @@ describe('Personal Paging Policy Values Endpoint Tests', () => {
 
     it(`should throw an error when getting the contact types`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-public/v1/policies/types/contacts')
         .replyWithError('Something bad happened!');
 
@@ -169,7 +173,7 @@ describe('Personal Paging Policy Values Endpoint Tests', () => {
 
     it(`should return the available timeout values`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-public/v1/policies/types/timeouts')
         .reply(200, response);
 
@@ -184,7 +188,7 @@ describe('Personal Paging Policy Values Endpoint Tests', () => {
 
     it(`should throw an error when getting the timeout values`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-public/v1/policies/types/timeouts')
         .replyWithError('Something bad happened!');
 

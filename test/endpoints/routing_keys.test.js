@@ -15,6 +15,7 @@ const baseUrl = clientRewire.__get__('BASE_URL');
 
 describe('Routing Keys Endpoint Tests', () => {
   let client;
+  let reqHeaders;
 
   // Set the client options.
   const clientOptions = {
@@ -24,6 +25,9 @@ describe('Routing Keys Endpoint Tests', () => {
 
   beforeEach(() => {
     client = new VictorOpsApiClient(clientOptions);
+
+    // Get the headers from the instance.
+    reqHeaders = { reqheaders: client._headers };
   });
 
   context('#getRoutingKeys()', () => {
@@ -46,7 +50,7 @@ describe('Routing Keys Endpoint Tests', () => {
 
     it(`should return a list of routing keys`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-public/v1/org/routing-keys')
         .reply(200, response);
 
@@ -61,7 +65,7 @@ describe('Routing Keys Endpoint Tests', () => {
 
     it(`should throw an error when getting the routing keys`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-public/v1/org/routing-keys')
         .replyWithError('Something bad happened!');
 
@@ -82,7 +86,7 @@ describe('Routing Keys Endpoint Tests', () => {
 
     it(`should create a routing key`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .post('/api-public/v1/org/routing-keys')
         .reply(200, response);
 
@@ -102,7 +106,7 @@ describe('Routing Keys Endpoint Tests', () => {
 
     it(`should throw an error when creating a routing key`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .post('/api-public/v1/org/routing-keys')
         .replyWithError('Something bad happened!');
 

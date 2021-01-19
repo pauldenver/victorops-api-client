@@ -15,6 +15,7 @@ const baseUrl = clientRewire.__get__('BASE_URL');
 
 describe('Alerts Endpoint Tests', () => {
   let client;
+  let reqHeaders;
 
   // Set the client options.
   const clientOptions = {
@@ -24,6 +25,9 @@ describe('Alerts Endpoint Tests', () => {
 
   beforeEach(() => {
     client = new VictorOpsApiClient(clientOptions);
+
+    // Get the headers from the instance.
+    reqHeaders = { reqheaders: client._headers };
   });
 
   context('#getAlert()', () => {
@@ -43,7 +47,7 @@ describe('Alerts Endpoint Tests', () => {
 
     it(`should return the alert details`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-public/v1/alerts/f9921e5a-3cb6-4276-996a-bca58f6b169c')
         .reply(200, response);
 
@@ -59,7 +63,7 @@ describe('Alerts Endpoint Tests', () => {
 
     it(`should throw an error when getting the alert details`, async () => {
       // Mock the API request.
-      nock(baseUrl)
+      nock(baseUrl, reqHeaders)
         .get('/api-public/v1/alerts/some-alert-uuid')
         .replyWithError('Something bad happened!');
 
